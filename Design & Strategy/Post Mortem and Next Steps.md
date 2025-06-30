@@ -16,9 +16,10 @@
 
  - Kuberentes configurations can proliferate depending on the types of clusters needed. Enforce cluster management at the lowest level to ensure standard images and libraries are used.
 
+ - Ideally the Spark framework would be written in Scala and not Python.
+
  ## Next steps
 
  - Clean up Kubernetes config, it should be configured once at the lowest level, and implemented by Helm charts.
 
  - Add unit testing. Unit tests will enforce code quality in all layers of the PySpark framework to ensure consistent and stable reusable components, and should be included with each implementation to guarantee logic and code coverage.
- 

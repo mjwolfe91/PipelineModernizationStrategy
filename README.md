@@ -11,3 +11,5 @@ Task: Describe your strategic vision for addressing this challenge. Your respons
     d. data quality
     e. operational efficiency
 4. provide a high-level phased approach for migration and delivery
+
+This is my attempt to document and provide proof-of-concept and a small demo to address the above scenario. All code is available in src, with documentation available describing each component. Diagrams, plans, and write-ups are available in the Design & Strategy directory.

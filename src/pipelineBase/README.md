@@ -1,0 +1,1 @@
+The DataPipelineBase class is the building block for all data pipelines. This is a highly abstract class that provides basic Spark and Python components, so anything implemented here should be shared across all pipelines.
