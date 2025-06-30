@@ -1,0 +1,40 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: streaming-pipeline
+  namespace: {{ .Values.namespace }}
+spec:
+  type: Python
+  mode: cluster
+  image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+  imagePullPolicy: Always
+  mainApplicationFile: {{ .Values.mainApplicationFile }}
+  sparkVersion: {{ .Values.sparkVersion }}
+  restartPolicy:
+    type: Never
+  driver:
+    cores: {{ .Values.resources.driver.cores }}
+    memory: {{ .Values.resources.driver.memory }}
+    serviceAccount: spark
+  executor:
+    cores: {{ .Values.resources.executor.cores }}
+    instances: {{ .Values.resources.executor.instances }}
+    memory: {{ .Values.resources.executor.memory }}
+  deps:
+    jars:
+      - local:///opt/spark/jars/iceberg-spark-runtime-3.3_2.12-1.4.2.jar
+  sparkConf:
+    {{- if eq .Values.storage.type "s3a" }}
+    "spark.hadoop.fs.s3a.endpoint": {{ .Values.storage.endpoint | quote }}
+    "spark.hadoop.fs.s3a.access.key": {{ .Values.storage.accessKey | quote }}
+    "spark.hadoop.fs.s3a.secret.key": {{ .Values.storage.secretKey | quote }}
+    "spark.hadoop.fs.s3a.path.style.access": "true"
+    {{- end }}
+    "spark.sql.catalog.my_catalog": "org.apache.iceberg.spark.SparkCatalog"
+    "spark.sql.catalog.my_catalog.type": {{ .Values.storage.icebergCatalogType | quote }}
+    "spark.sql.catalog.my_catalog.warehouse": {{ .Values.storage.warehousePath | quote }}
+    "spark.metrics.conf.*.sink.prometheus.class": "org.apache.spark.metrics.sink.PrometheusSink"
+    "spark.ui.prometheus.enabled": "true"
+    "spark.kubernetes.driver.annotation.prometheus.io/scrape": "true"
+    "spark.kubernetes.driver.annotation.prometheus.io/port": "8000"
+    "spark.kubernetes.driver.annotation.prometheus.io/path": "/"

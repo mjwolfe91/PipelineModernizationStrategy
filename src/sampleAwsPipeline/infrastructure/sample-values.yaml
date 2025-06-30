@@ -1,0 +1,20 @@
+namespace: sample-aws-streaming-pipeline
+image:
+  repository: ghcr.io/org/sample-pipeline
+  tag: v1.2.0
+mainApplicationFile: local:///app/sampleStreamingIngest.py
+storage:
+  type: s3a
+  endpoint: https://s3.amazonaws.com
+  accessKey: AKIA...
+  secretKey: abc123...
+  warehousePath: s3a://sample-streaming/warehouse
+  icebergCatalogType: glue
+resources:
+  driver:
+    cores: 2
+    memory: 2g
+  executor:
+    cores: 2
+    memory: 4g
+    instances: 3

@@ -1,0 +1,20 @@
+namespace: data-pipeline
+image:
+  repository: common-repo/spark-streaming-pipeline
+  tag: latest
+sparkVersion: "3.3.0"
+mainApplicationFile: local:///app/streaming_pipeline.py
+storage:
+  type: s3a  # s3a, gs, abfs, file
+  endpoint: https://s3.amazonaws.com
+  accessKey: DEFAULT_ACCESS_KEY
+  secretKey: DEFAULT_SECRET_KEY
+  warehousePath: s3a://spark-pipeline-storage/warehouse
+resources:
+  driver:
+    cores: 1
+    memory: 1g
+  executor:
+    cores: 1
+    memory: 2g
+    instances: 2
